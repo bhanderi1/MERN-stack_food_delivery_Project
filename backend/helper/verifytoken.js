@@ -4,7 +4,6 @@ const User = require('../Model/user.model')
 exports.verifyToken = async(req,res,next)=>{
     try{
         let authorization = req.cookies.auth_token;
-
         if(!authorization)
             req.flash({message:'not authorization'})
         let token = authorization.split(" ")[1];

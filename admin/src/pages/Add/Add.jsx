@@ -12,17 +12,32 @@ const Add = () => {
     const [image,setImage]= useState(false)
     
 
-    const handelSubmit = async(e)=>{
+    const handelSubmit = async (e) => {
         e.preventDefault();
-        setImage(null)
-        const bodyData = {name:name, description:description, price:price, category:category, image:image}
-        console.log(bodyData);
-        let response = await axios.post('http://localhost:4000/api/food/add-food',bodyData)
-        console.log(response);
-    }
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('description', description);
+        formData.append('price', price);
+        formData.append('category', category);
+        formData.append('foodImage', image); 
+        try {
+            const response = await axios.post('http://localhost:4000/api/food/add-food', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            console.log(response);
+            toast.success("Product added successfully!");
+            
+        } catch (error) {
+            console.error(error);
+            toast.error("Failed to add product.");
+        }
+    };
+    
     return (
         <div className='add'>
-            <form action="" className='flex-col' onSubmit={handelSubmit}>
+           <form className='flex-col' onSubmit={handelSubmit}>
                 <div className="add-img-upload flex-col">
                     <p>Upload Image</p>
                     <label htmlFor="image" className='add_image'>
