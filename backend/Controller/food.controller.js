@@ -33,7 +33,7 @@ exports.foodList = async (req, res) => {
         if (!food) {
             return res.status(404).json({ message: "No products found",  success: true });
         }
-        res.status(200).json({data:food});
+        res.status(200).json({food});
     } catch (err) {
         console.log(err);
         res.status(500).json({ message: "Internal server error",success: false });
