@@ -1,13 +1,24 @@
-import React, { useContext, useState } from 'react'
-import './Navbar.css'
-import { assets } from '../../src/assets/assets'
-import { Link } from 'react-router-dom'
-import { StoreContext } from '../../src/context/StoreContext'
+import React, { useContext, useState } from 'react';
+import './Navbar.css';
+import { assets } from '../../src/assets/assets';
+import { Link, useNavigate } from 'react-router-dom';
+import { StoreContext } from '../../src/context/StoreContext';
+import axios from 'axios';
 
 const Navbar = ({ setShowLogin }) => {
-
-    const [menu, setmenu] = useState("home")
+    const [menu, setmenu] = useState("home");
     const { getTotalCartAmount } = useContext(StoreContext);
+    const navigate = useNavigate();
+
+    const handleLogout = async () => {
+        try {
+            await axios.delete('http://localhost:4000/api/food/logout', { withCredentials: true });
+            navigate('/');
+        } catch (error) {
+            console.error('Error logging out:', error);
+        }
+    };
+    
 
     return (
         <div className='navbar'>
@@ -24,20 +35,23 @@ const Navbar = ({ setShowLogin }) => {
                     <Link to='/cart'><img src={assets.basket_icon} alt='' /></Link>
                     <div className={getTotalCartAmount() === 0 ? "" : "dot"}> </div>
                 </div>
-                {!menu ? <button onClick={() => { setShowLogin(true) }}>
-                    Sign In
-                </button> : <div className='navbar-profile'>
-                    <img src={assets.profile_icon} alt="" />
-                    <ul className="nav-profile-dropdown">
-                        <li><img src={assets.bag_icon} alt="" />Orders</li>
-                        <hr />
-                        <li><img src={assets.logout_icon} alt="" />Logout</li>
-                    </ul>
-                </div>}
-
+                {!menu ? (
+                    <button onClick={() => setShowLogin(true)}>
+                        Sign In
+                    </button>
+                ) : (
+                    <div className='navbar-profile'>
+                        <img src={assets.profile_icon} alt="" />
+                        <ul className="nav-profile-dropdown">
+                            <li><img src={assets.bag_icon} alt="" />Orders</li>
+                            <hr />
+                            <li onClick={handleLogout}><img src={assets.logout_icon} alt="" />Logout</li>
+                        </ul>
+                    </div>
+                )}
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default Navbar
+export default Navbar;
