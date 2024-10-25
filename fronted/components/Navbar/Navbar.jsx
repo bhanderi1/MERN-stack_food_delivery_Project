@@ -12,7 +12,7 @@ const Navbar = ({ setShowLogin }) => {
 
     const handleLogout = async () => {
         try {
-            await axios.delete('http://localhost:4000/api/food/logout', { withCredentials: true });
+            await axios.delete('http://localhost:4000/api/user/logout', { withCredentials: true });
             navigate('/');
         } catch (error) {
             console.error('Error logging out:', error);

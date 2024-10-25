@@ -1,12 +1,22 @@
-import React, { useContext } from 'react'
+import React, { useContext ,useState ,useEffect} from 'react'
 import './Cart.css'
 import { StoreContext } from '../../context/StoreContext'
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Cart = () => {
-  const { cartItems, food_list, removeFromCart,getTotalCartAmount } = useContext(StoreContext);
+  const { cartItems, removeFromCart,getTotalCartAmount } = useContext(StoreContext);
 
   const navigate = useNavigate();
+  const [list, setList] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get('http://localhost:4000/api/food/food-list')
+      .then(response => setList(response.data.food))
+      .catch(err => console.error('Error fetching food data:', err));
+  }, []);
+
   return (
     <div className='cart'>
       <div className="cart-item">
@@ -20,7 +30,7 @@ const Cart = () => {
         </div>
         <br />
         <hr />
-        {food_list.map((item, index) => {
+        {list.map((item) => {
           if (cartItems[item._id] > 0) {
             return (
               <div>

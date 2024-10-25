@@ -13,7 +13,7 @@ const Add = () => {
     
 
     const handelSubmit = async (e) => {
-        e.preventDefault();
+        // e.preventDefault();
         const formData = new FormData();
         formData.append('name', name);
         formData.append('description', description);

@@ -6,22 +6,24 @@ import { toast } from 'react-toastify';
 const List = () => {
   const [list, setList] = useState([]);
 
+  // Fetching food data on component mount
   useEffect(() => {
     axios
       .get('http://localhost:4000/api/food/food-list')
       .then(response => setList(response.data.food))
-      .catch(err => console.error(err));
+      .catch(err => console.error('Error fetching food data:', err));
   }, []);
 
+  // Remove food item handler
   const removeFood = (id) => {
     axios
       .delete(`http://localhost:4000/api/food/food-item-delete?foodId=${id}`)
       .then(response => {
         toast.success(response.data.message);
-        setList(list.filter(item => item._id !== id)); 
+        setList(list.filter(item => item._id !== id));
       })
       .catch(err => {
-        console.error(err);
+        console.error('Error deleting the item:', err);
         toast.error('Failed to delete the item');
       });
   };
@@ -39,13 +41,20 @@ const List = () => {
         </div>
         {list.map(item => (
           <div className='list-table-format' key={item._id}>
-            <img src={`http://localhost:4000/${item.image}`} alt='Item_image' className='item-image' />
+            <img 
+              src={`http://localhost:4000/${item.image}`} 
+              alt={item.name} 
+              className='item-image' 
+            />
             <p>{item.name}</p>
             <p>{item.category}</p>
             <p>${item.price}.00</p>
-            <p onClick={() => removeFood(item._id)} className='cursor'>
-              X
-            </p>
+            <button 
+              onClick={() => removeFood(item._id)} 
+              className='delete-button'
+            >
+              Delete
+            </button>
           </div>
         ))}
       </div>
