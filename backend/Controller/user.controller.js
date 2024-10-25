@@ -43,7 +43,7 @@ exports.signIn = async(req,res)=>{
             return res.json({message:"Email password not matched..."})
         }
         let token = await jwt.sign({userId:user._id}, process.env.JWT_SECRATE)
-        console.log(token);
+        res.cookie("auth_token", token );
         res.status(200).json({message:"Login Successfully" , token , user})
 
     }

@@ -33,7 +33,6 @@ const LoginPopup = ({ setShowLogin }) => {
       console.error('An error occurred:', error);
     }
   };
-  
 
   return (
     <div className='login-popup'>

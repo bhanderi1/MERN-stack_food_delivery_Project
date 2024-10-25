@@ -8,11 +8,13 @@ import axios from 'axios';
 const Navbar = ({ setShowLogin }) => {
     const [menu, setmenu] = useState("home");
     const { getTotalCartAmount } = useContext(StoreContext);
+    const [isAuthenticated, setIsAuthenticated] = useState(false)
     const navigate = useNavigate();
 
     const handleLogout = async () => {
         try {
             await axios.delete('http://localhost:4000/api/user/logout', { withCredentials: true });
+            setIsAuthenticated(false);
             navigate('/');
         } catch (error) {
             console.error('Error logging out:', error);
@@ -35,7 +37,7 @@ const Navbar = ({ setShowLogin }) => {
                     <Link to='/cart'><img src={assets.basket_icon} alt='' /></Link>
                     <div className={getTotalCartAmount() === 0 ? "" : "dot"}> </div>
                 </div>
-                {!menu ? (
+                {!isAuthenticated ? (
                     <button onClick={() => setShowLogin(true)}>
                         Sign In
                     </button>
