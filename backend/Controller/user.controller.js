@@ -2,7 +2,6 @@ const User = require('../Model/user.model')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
-
 exports.signup = async (req, res) => {
     try {
         let {name, email, password, profilImage } = req.body
@@ -23,7 +22,6 @@ exports.signup = async (req, res) => {
             password: hashPassword,
             profileImage: imagePath
         })
-
         res.status(201).json({ message: "User Register successfully...", user })
     }
     catch (err) {
@@ -43,9 +41,8 @@ exports.signIn = async(req,res)=>{
             return res.json({message:"Email password not matched..."})
         }
         let token = await jwt.sign({userId:user._id}, process.env.JWT_SECRATE)
-        res.cookie("auth_token", token );
+        res.cookie("auth_token", token)
         res.status(200).json({message:"Login Successfully" , token , user})
-
     }
     catch (err) {
         console.error(err);

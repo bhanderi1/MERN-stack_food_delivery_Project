@@ -3,29 +3,38 @@ const Food = require('../Model/food.model')
 
 exports.addCart = async (req, res) => {
     try {
-        const { food, quantity } = req.body;
-        const userId = req.user._id;
-        let foods = await Food.findById(food);
-        if (!foods) {
-            return res.json({ message: "Product not found..." })
+        if (!req.user) {
+            return res.status(401).json({ message: "User not authenticated" });
         }
+        
+        const { food, quantity } = req.body;
+        const userId = req.user._id; 
+        let foods = await Food.findById(food);
+        
+        if (!foods) {
+            return res.json({ message: "Product not found..." });
+        }
+
         let cart = await Cart.findOne({
             food: food,
             user: userId,
         });
 
         if (cart) {
-            return res.json({ message: "Cart Already Exist..." })
+            return res.json({ message: "Cart Already Exist..." });
         }
 
         cart = await Cart.create({
-            food: food, user: userId, quantity: quantity, price:foods.price
-        })
-        res.json({message:'Cart Added...',cart})
-    }
-    catch (err) {
+            food: food,
+            user: userId,
+            quantity: quantity,
+            price: foods.price,
+        });
+
+        res.json({ message: 'Cart Added...', cart });
+    } catch (err) {
         console.log(err);
-        res.status(500).json({ message: "Internal ser" })
+        res.status(500).json({ message: "Internal server error" });
     }
 }
 

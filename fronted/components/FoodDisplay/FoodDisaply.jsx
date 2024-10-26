@@ -8,6 +8,14 @@ const FoodDisplay = ({ category }) => {
   const { cartItems, addToCart, removeFromCart } = useContext(StoreContext);
   const [list, setList] = useState([]);
 
+  useEffect(() => {
+    // Fetch food list data
+    axios
+      .get('http://localhost:4000/api/food/food-list')
+      .then(response => setList(response.data.food))
+      .catch(err => console.error('Error fetching food data:', err));
+  }, []);
+
   const addToCartHandler = async (itemId) => {
     try {
       const response = await axios.post('http://localhost:4000/api/cart/add-cart', {
@@ -15,18 +23,28 @@ const FoodDisplay = ({ category }) => {
         quantity: 1 
       });
       console.log('Added to cart:', response.data);
+      
+      // Update local cart state
+      addToCart(itemId);
     } catch (error) {
       console.error('Error adding to cart:', error);
     }
   };
-  
 
-  useEffect(() => {
-    axios
-      .get('http://localhost:4000/api/food/food-list')
-      .then(response => setList(response.data.food))
-      .catch(err => console.error('Error fetching food data:', err));
-  }, []);
+  const incrementQuantity = async (itemId) => {
+    try {
+      const response = await axios.post('http://localhost:4000/api/cart/update-cart', {
+        food: itemId,
+        quantity: 1 // Increment by 1
+      });
+      console.log('Quantity updated:', response.data);
+
+      // Update local state
+      addToCart(itemId);
+    } catch (error) {
+      console.error('Error updating quantity:', error);
+    }
+  };
 
   return (
     <div className='food-display' id='food-display'>
@@ -34,29 +52,31 @@ const FoodDisplay = ({ category }) => {
       <div className='food-display-list'>
         {list
           .filter(item => category === 'All' || category === item.category)
-          .map((item, index) => (
+          .map((item) => (
             <div className='food-item' key={item._id}>
               <div className='food-item-img-container'>
-                <img className="food-item-image" src={`http://localhost:4000/${item.image}`} alt='' />
+                <img className="food-item-image" src={`http://localhost:4000/${item.image}`} alt={item.name} />
+                
+                {/* Conditional rendering for add/remove from cart */}
                 {!cartItems[item._id] ? (
                   <img
                     className="add"
                     onClick={() => addToCartHandler(item._id)}
                     src={assets.add_icon_white}
-                    alt=''
+                    alt='Add to Cart'
                   />
                 ) : (
                   <div className='food-item-counter'>
                     <img
                       src={assets.remove_icon_red}
                       onClick={() => removeFromCart(item._id)}
-                      alt=''
+                      alt='Remove from Cart'
                     />
                     <p>{cartItems[item._id]}</p>
                     <img
                       src={assets.add_icon_green}
-                      onClick={() => addToCart(item._id)}
-                      alt=''
+                      onClick={() => incrementQuantity(item._id)}
+                      alt='Add More'
                     />
                   </div>
                 )}
@@ -64,7 +84,7 @@ const FoodDisplay = ({ category }) => {
               <div className='food-item-info'>
                 <div className='food-item-name-rating'>
                   <p>{item.name}</p>
-                  <img src={assets.rating_starts} alt='rating' />
+                  <img src={assets.rating_starts} alt='Rating' />
                 </div>
                 <p className='food-item-desc'>{item.description}</p>
                 <p className='food-item-price'>${item.price}</p>

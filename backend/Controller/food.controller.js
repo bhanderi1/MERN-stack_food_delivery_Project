@@ -29,7 +29,7 @@ exports.addFood = async (req, res) => {
 
 exports.foodList = async (req, res) => {
     try {
-        const food = await Food.find({ isDeleted: false });
+        const food = await Food.find({isDeleted:false});
         if (!food) {
             return res.status(404).json({ message: "No products found",  success: true });
         }

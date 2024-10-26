@@ -3,12 +3,14 @@ const User = require('../Model/user.model')
 
 exports.verifyToken = async(req,res,next)=>{
     try{
-        let authorization = req.cookies.auth_token;
+        let authorization = req.cookies.food_auth_token;
+        console.log(authorization);
+        
         if(!authorization)
             req.flash({message:'not authorization'})
         let token = authorization.split(" ")[1];
 
-        let {userId} = await jwt.verify(token, process.env.JWT_SECRET);
+        let {userId} = await jwt.verify(token, process.env.JWT_SECRATE);
 
         let user = await User.findOne({_id:userId , isDelete:false});
 

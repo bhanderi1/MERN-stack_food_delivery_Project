@@ -6,11 +6,13 @@ const mongoose = require('mongoose')
 const port = process.env.PORT
 const cors = require('cors')
 const path= require('path')
+const cookie = require('cookie-parser')
 
 app.use(cors())
 app.use(morgan('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
+app.use(cookie())
 
 app.use("/public/images",express.static(path.join(__dirname, "public/images")))
 
