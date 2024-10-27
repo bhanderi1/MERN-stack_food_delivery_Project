@@ -41,7 +41,7 @@ exports.signIn = async(req,res)=>{
             return res.json({message:"Email password not matched..."})
         }
         let token = await jwt.sign({userId:user._id}, process.env.JWT_SECRATE)
-        res.cookie("auth_token", token)
+        res.cookie("auth_token", token ,{httpOnly:true , secure:false , sameSite:'Lax'})
         res.status(200).json({message:"Login Successfully" , token , user})
     }
     catch (err) {
@@ -53,6 +53,7 @@ exports.signIn = async(req,res)=>{
 exports.userProfile = async(req,res)=>{
     try{
         let user = await User.findOne({_id:req.user._id})
+        // console.log(user);
         res.status(200).json({message:"Show User Profile", user})
     }
     catch (err) {

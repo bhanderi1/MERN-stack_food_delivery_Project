@@ -34,12 +34,15 @@ const StoreContextProvider = (props) => {
         }
     };
 
-    const getTotalCartAmount = () => {
-        return Object.values(cartItems).reduce((acc, item) => acc + item.price * item.quantity, 0);
-    };
+    // const getTotalCartAmount = () => {
+    //     if (Object.keys(cartItems).length === 0) return 0; // Return 0 if the cart is empty
+    //     return Object.values(cartItems).reduce((acc, item) => acc + item.price * item.quantity, 0);
+    // };
+    
 
     const contextValue = {
-        cartItems, setCartItems, addToCart, removeFromCart, getTotalCartAmount
+        cartItems, setCartItems, addToCart, removeFromCart,
+        //  getTotalCartAmount
     };
 
     return (

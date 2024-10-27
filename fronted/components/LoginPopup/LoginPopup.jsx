@@ -9,30 +9,32 @@ const LoginPopup = ({ setShowLogin }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  axios.defaults.withCredentials = true
   const handleSubmit = async (e) => {
     e.preventDefault();
     const bodyData = { email, password };
     if (currState === 'Sign Up') {
       bodyData.name = name;
     }
-  
+
     try {
       const endpoint = currState === 'Sign Up' 
         ? 'http://localhost:4000/api/user/signUp' 
         : 'http://localhost:4000/api/user/signIn';
-      const response = await axios.post(endpoint, bodyData);
-  
+
+      const response = await axios.post(endpoint, bodyData, { withCredentials: true });
       console.log(response.data);
-  
+
       setName('');
       setEmail('');
       setPassword('');
       setShowLogin(false);
-  
+
     } catch (error) {
       console.error('An error occurred:', error);
     }
-  };
+};
+
 
   return (
     <div className='login-popup'>

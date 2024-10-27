@@ -8,6 +8,7 @@ const FoodDisplay = ({ category }) => {
   const { cartItems, addToCart, removeFromCart } = useContext(StoreContext);
   const [list, setList] = useState([]);
 
+  axios.defaults.withCredentials = true
   useEffect(() => {
     // Fetch food list data
     axios
@@ -39,7 +40,6 @@ const FoodDisplay = ({ category }) => {
       });
       console.log('Quantity updated:', response.data);
 
-      // Update local state
       addToCart(itemId);
     } catch (error) {
       console.error('Error updating quantity:', error);
@@ -57,7 +57,6 @@ const FoodDisplay = ({ category }) => {
               <div className='food-item-img-container'>
                 <img className="food-item-image" src={`http://localhost:4000/${item.image}`} alt={item.name} />
                 
-                {/* Conditional rendering for add/remove from cart */}
                 {!cartItems[item._id] ? (
                   <img
                     className="add"

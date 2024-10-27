@@ -15,35 +15,37 @@ const Navbar = ({ setShowLogin }) => {
 
     useEffect(() => {
         const checkAuth = async () => {
-            const token = Cookies.get('auth_token');
-            if (token) {
-                try {
-                   // Fetch the user profile with the token
-                    // const response = await axios.get('http://localhost:4000/api/user/user-profile', {
-                    //     withCredentials: true, // Send cookies with the request
-                    // });
-                    setIsAuthenticated(true);
-                    // setUserProfile(response.data.user); // Set user profile data
-                } catch (error) {
-                    console.error('Failed to fetch user profile:', error);
-                }
+            try {
+                const response = await axios.get('http://localhost:4000/api/user/user-profile', {
+                    withCredentials: true  // Include credentials to access the cookie
+                });
+                console.log(response);
+                setUserProfile(response.data);
+                setIsAuthenticated(true);
+            } catch (error) {
+                console.error('Failed to fetch user profile:', error);
+                setIsAuthenticated(false);
             }
         };
         checkAuth();
     }, []);
-
+    
+    
+    
+    console.log(isAuthenticated);
+    
     const handleLogout = async () => {
         try {
-            await axios.delete('http://localhost:4000/api/user/logout');
-            Cookies.remove('auth_token');
+            await axios.delete('http://localhost:4000/api/user/logout', { withCredentials: true });
+            Cookies.remove('auth_token'); 
             setIsAuthenticated(false);
+            setUserProfile(null);
             navigate('/');
         } catch (error) {
             console.error('Error logging out:', error);
         }
     };
 
-    
     return (
         <div className='navbar'>
             <Link to='/'><img src={assets.logo} alt="" className='logo' /></Link>
@@ -57,7 +59,7 @@ const Navbar = ({ setShowLogin }) => {
                 <img src={assets.search_icon} alt='' />
                 <div className='navbar-search-icon'>
                     <Link to='/cart'><img src={assets.basket_icon} alt='' /></Link>
-                    <div className={getTotalCartAmount() === 0 ? "" : "dot"}> </div>
+                    {/* <div className={getTotalCartAmount() === 0 ? "" : "dot"}> </div> */}
                 </div>
                 {!isAuthenticated ? (
                     <button onClick={() => setShowLogin(true)}>
@@ -65,7 +67,7 @@ const Navbar = ({ setShowLogin }) => {
                     </button>
                 ) : (
                     <div className='navbar-profile'>
-                        <img src={assets.profile_icon} alt="" />
+                        <img src={userProfile?.profileImage || assets.profile_icon} alt="Profile" />
                         <ul className="nav-profile-dropdown">
                             <li><img src={assets.bag_icon} alt=""/>Orders</li>
                             <hr />
