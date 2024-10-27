@@ -56,8 +56,7 @@ exports.getCart = async(req,res)=>{
 exports.getAllCart = async(req,res)=>{
     try{
         const cart = await Cart.find({isDelete:false})
-        .populate("food", "name , description , price")
-        .exec();
+        .populate("food");
         res.json(cart)
     }
     catch(err){

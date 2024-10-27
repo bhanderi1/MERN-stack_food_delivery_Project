@@ -8,9 +8,8 @@ const FoodDisplay = ({ category }) => {
   const { cartItems, addToCart, removeFromCart } = useContext(StoreContext);
   const [list, setList] = useState([]);
 
-  axios.defaults.withCredentials = true
+  axios.defaults.withCredentials = true;
   useEffect(() => {
-    // Fetch food list data
     axios
       .get('http://localhost:4000/api/food/food-list')
       .then(response => setList(response.data.food))
@@ -19,14 +18,7 @@ const FoodDisplay = ({ category }) => {
 
   const addToCartHandler = async (itemId) => {
     try {
-      const response = await axios.post('http://localhost:4000/api/cart/add-cart', {
-        food: itemId,
-        quantity: 1 
-      });
-      console.log('Added to cart:', response.data);
-      
-      // Update local cart state
-      addToCart(itemId);
+      await addToCart(itemId); // Call the context function directly
     } catch (error) {
       console.error('Error adding to cart:', error);
     }
@@ -34,13 +26,7 @@ const FoodDisplay = ({ category }) => {
 
   const incrementQuantity = async (itemId) => {
     try {
-      const response = await axios.post('http://localhost:4000/api/cart/update-cart', {
-        food: itemId,
-        quantity: 1 // Increment by 1
-      });
-      console.log('Quantity updated:', response.data);
-
-      addToCart(itemId);
+      await addToCart(itemId); // Use addToCart again to increment
     } catch (error) {
       console.error('Error updating quantity:', error);
     }
@@ -55,7 +41,11 @@ const FoodDisplay = ({ category }) => {
           .map((item) => (
             <div className='food-item' key={item._id}>
               <div className='food-item-img-container'>
-                <img className="food-item-image" src={`http://localhost:4000/${item.image}`} alt={item.name} />
+                <img
+                  className="food-item-image"
+                  src={`http://localhost:4000/${item.image}`}
+                  alt={item.name}
+                />
                 
                 {!cartItems[item._id] ? (
                   <img
@@ -71,7 +61,7 @@ const FoodDisplay = ({ category }) => {
                       onClick={() => removeFromCart(item._id)}
                       alt='Remove from Cart'
                     />
-                    <p>{cartItems[item._id]}</p>
+                    <p>{cartItems[item._id] || 0}</p>
                     <img
                       src={assets.add_icon_green}
                       onClick={() => incrementQuantity(item._id)}

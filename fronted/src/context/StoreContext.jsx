@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useState } from "react";
 import axios from 'axios';
 
 export const StoreContext = createContext(null);
@@ -6,43 +6,41 @@ export const StoreContext = createContext(null);
 const StoreContextProvider = (props) => {
     const [cartItems, setCartItems] = useState({});
 
-    // useEffect(() => {
-    //     // Fetch cart items from database when component mounts
-    //     axios.get('http://localhost:4000/api/cart/get-cart')
-    //         .then(response => setCartItems(response.data.cartItems))
-    //         .catch(error => console.error('Error fetching cart data:', error));
-    // }, []);
-
     const addToCart = async (itemId) => {
         try {
-            const response = await axios.post('http://localhost:4000/api/cart/add-cart', {
+            await axios.post('http://localhost:4000/api/cart/add-cart', {
                 food: itemId,
                 quantity: cartItems[itemId] ? cartItems[itemId] + 1 : 1
             });
-            setCartItems(response.data.cartItems); 
+            // Ensure cartItems is updated correctly
+            setCartItems((prevItems) => ({
+                ...prevItems,
+                [itemId]: (prevItems[itemId] || 0) + 1 
+            }));
         } catch (error) {
             console.error('Error adding to cart:', error);
         }
     };
 
+    // Context - StoreContext.js
     const removeFromCart = async (itemId) => {
         try {
-            const response = await axios.post('http://localhost:4000/api/cart/remove-cart', { food: itemId });
-            setCartItems(response.data.cartItems);
+            await axios.post('http://localhost:4000/api/cart/remove-cart', { food: itemId });
+
+            // Update cartItems state locally
+            setCartItems((prevItems) => {
+                const updatedItems = { ...prevItems };
+                delete updatedItems[itemId];
+                return updatedItems;
+            });
         } catch (error) {
-            console.error('Error removing from cart:', error);
+            console.error('Error removing item from cart:', error);
         }
     };
 
-    // const getTotalCartAmount = () => {
-    //     if (Object.keys(cartItems).length === 0) return 0; // Return 0 if the cart is empty
-    //     return Object.values(cartItems).reduce((acc, item) => acc + item.price * item.quantity, 0);
-    // };
-    
 
     const contextValue = {
         cartItems, setCartItems, addToCart, removeFromCart,
-        //  getTotalCartAmount
     };
 
     return (

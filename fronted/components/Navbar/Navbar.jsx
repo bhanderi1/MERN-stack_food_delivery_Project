@@ -19,7 +19,7 @@ const Navbar = ({ setShowLogin }) => {
                 const response = await axios.get('http://localhost:4000/api/user/user-profile', {
                     withCredentials: true  // Include credentials to access the cookie
                 });
-                console.log(response);
+                // console.log(response);
                 setUserProfile(response.data);
                 setIsAuthenticated(true);
             } catch (error) {
@@ -30,9 +30,7 @@ const Navbar = ({ setShowLogin }) => {
         checkAuth();
     }, []);
     
-    
-    
-    console.log(isAuthenticated);
+    // console.log(isAuthenticated);
     
     const handleLogout = async () => {
         try {
