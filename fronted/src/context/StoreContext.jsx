@@ -4,43 +4,57 @@ import axios from 'axios';
 export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
-    const [cartItems, setCartItems] = useState({});
+    const [cartItems, setCartItems] = useState([]);
 
-    const addToCart = async (itemId) => {
+    const addToCart = async (foodId, quantity = 1) => {
         try {
-            await axios.post('http://localhost:4000/api/cart/add-cart', {
-                food: itemId,
-                quantity: cartItems[itemId] ? cartItems[itemId] + 1 : 1
-            });
-            // Ensure cartItems is updated correctly
-            setCartItems((prevItems) => ({
-                ...prevItems,
-                [itemId]: (prevItems[itemId] || 0) + 1 
-            }));
+            const existingItem = cartItems.find(item => item.food._id === foodId);
+            if (existingItem) {
+                await updateCartItemQuantity(existingItem._id, existingItem.quantity + quantity);
+            } else {
+                const response = await axios.post('http://localhost:4000/api/cart/add-cart', { food: foodId, quantity });
+                const newCartItem = response.data.cart;
+                setCartItems(prevItems => [...prevItems, newCartItem]);
+            }
         } catch (error) {
             console.error('Error adding to cart:', error);
         }
     };
 
-    // Context - StoreContext.js
-    const removeFromCart = async (itemId) => {
+    const updateCartItemQuantity = async (cartId, quantity) => {
         try {
-            await axios.post('http://localhost:4000/api/cart/remove-cart', { food: itemId });
+            const response = await axios.put('http://localhost:4000/api/cart/update-cart', { cartId, quantity });
+            setCartItems(cartItems.map(item => 
+                item._id === cartId ? { ...item, quantity: response.data.cart.quantity } : item
+            ));
+        } catch (error) {
+            console.error('Error updating cart quantity:', error);
+        }
+    };
 
-            // Update cartItems state locally
-            setCartItems((prevItems) => {
-                const updatedItems = { ...prevItems };
-                delete updatedItems[itemId];
-                return updatedItems;
-            });
+    const removeFromCart = async (cartId) => {
+        try {
+            await axios.post('http://localhost:4000/api/cart/remove-cart', { cartId });
+            setCartItems(prevItems => prevItems.filter(item => item._id !== cartId));
         } catch (error) {
             console.error('Error removing item from cart:', error);
         }
     };
 
+    const incrementQuantity = (cartId, currentQuantity) => {
+        updateCartItemQuantity(cartId, currentQuantity + 1);
+    };
+
+    const decrementQuantity = (cartId, currentQuantity) => {
+        if (currentQuantity > 1) {
+            updateCartItemQuantity(cartId, currentQuantity - 1);
+        } else {
+            removeFromCart(cartId);
+        }
+    };
 
     const contextValue = {
-        cartItems, setCartItems, addToCart, removeFromCart,
+        cartItems, setCartItems, addToCart, removeFromCart, updateCartItemQuantity, incrementQuantity, decrementQuantity
     };
 
     return (

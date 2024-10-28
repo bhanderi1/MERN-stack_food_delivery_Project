@@ -26,6 +26,8 @@ app.get('/', (req, res) => {
 app.use('/api/food', require('./routes/food.routes'))
 app.use('/api/user', require('./routes/user.routes'))
 app.use('/api/cart', require('./routes/cart.routes'))
+app.use('/api/order', require('./routes/order.routes'))
+
 
 app.listen(port, () => {
     mongoose

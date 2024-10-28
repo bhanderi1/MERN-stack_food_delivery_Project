@@ -4,11 +4,12 @@ import { StoreContext } from '../../src/context/StoreContext';
 import { assets } from '../../src/assets/assets';
 import axios from 'axios';
 
+axios.defaults.withCredentials = true;
+
 const FoodDisplay = ({ category }) => {
-  const { cartItems, addToCart, removeFromCart } = useContext(StoreContext);
+  const { cartItems, addToCart,  incrementQuantity, decrementQuantity } = useContext(StoreContext);
   const [list, setList] = useState([]);
 
-  axios.defaults.withCredentials = true;
   useEffect(() => {
     axios
       .get('http://localhost:4000/api/food/food-list')
@@ -16,21 +17,15 @@ const FoodDisplay = ({ category }) => {
       .catch(err => console.error('Error fetching food data:', err));
   }, []);
 
-  const addToCartHandler = async (itemId) => {
+  const addToCartHandler = async (foodId) => {
     try {
-      await addToCart(itemId); // Call the context function directly
+      await addToCart(foodId, 1); 
     } catch (error) {
       console.error('Error adding to cart:', error);
     }
   };
 
-  const incrementQuantity = async (itemId) => {
-    try {
-      await addToCart(itemId); // Use addToCart again to increment
-    } catch (error) {
-      console.error('Error updating quantity:', error);
-    }
-  };
+  const getCartItem = (foodId) => cartItems.find(item => item.food._id === foodId);
 
   return (
     <div className='food-display' id='food-display'>
@@ -38,48 +33,51 @@ const FoodDisplay = ({ category }) => {
       <div className='food-display-list'>
         {list
           .filter(item => category === 'All' || category === item.category)
-          .map((item) => (
-            <div className='food-item' key={item._id}>
-              <div className='food-item-img-container'>
-                <img
-                  className="food-item-image"
-                  src={`http://localhost:4000/${item.image}`}
-                  alt={item.name}
-                />
-                
-                {!cartItems[item._id] ? (
+          .map((item) => {
+            const cartItem = getCartItem(item._id);
+            return (
+              <div className='food-item' key={item._id}>
+                <div className='food-item-img-container'>
                   <img
-                    className="add"
-                    onClick={() => addToCartHandler(item._id)}
-                    src={assets.add_icon_white}
-                    alt='Add to Cart'
+                    className="food-item-image"
+                    src={`http://localhost:4000/${item.image}`}
+                    alt={item.name}
                   />
-                ) : (
-                  <div className='food-item-counter'>
+
+                  {!cartItem ? (
                     <img
-                      src={assets.remove_icon_red}
-                      onClick={() => removeFromCart(item._id)}
-                      alt='Remove from Cart'
+                      className="add"
+                      onClick={() => addToCartHandler(item._id)}
+                      src={assets.add_icon_white}
+                      alt='Add to Cart'
                     />
-                    <p>{cartItems[item._id] || 0}</p>
-                    <img
-                      src={assets.add_icon_green}
-                      onClick={() => incrementQuantity(item._id)}
-                      alt='Add More'
-                    />
-                  </div>
-                )}
-              </div>
-              <div className='food-item-info'>
-                <div className='food-item-name-rating'>
-                  <p>{item.name}</p>
-                  <img src={assets.rating_starts} alt='Rating' />
+                  ) : (
+                    <div className='food-item-counter'>
+                      <img
+                        src={assets.remove_icon_red}
+                        onClick={() => decrementQuantity(cartItem._id, cartItem.quantity)}
+                        alt='Decrement Quantity'
+                      />
+                      <p>{cartItem.quantity}</p>
+                      <img
+                        src={assets.add_icon_green}
+                        onClick={() => incrementQuantity(cartItem._id, cartItem.quantity)}
+                        alt='Increment Quantity'
+                      />
+                    </div>
+                  )}
                 </div>
-                <p className='food-item-desc'>{item.description}</p>
-                <p className='food-item-price'>${item.price}</p>
+                <div className='food-item-info'>
+                  <div className='food-item-name-rating'>
+                    <p>{item.name}</p>
+                    <img src={assets.rating_starts} alt='Rating' />
+                  </div>
+                  <p className='food-item-desc'>{item.description}</p>
+                  <p className='food-item-price'>${item.price}</p>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
       </div>
     </div>
   );
