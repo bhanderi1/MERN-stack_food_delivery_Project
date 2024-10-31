@@ -9,6 +9,7 @@ const StoreContextProvider = (props) => {
     const addToCart = async (foodId, quantity = 1) => {
         try {
             const existingItem = cartItems.find(item => item.food._id === foodId);
+            
             if (existingItem) {
                 await updateCartItemQuantity(existingItem._id, existingItem.quantity + quantity);
             } else {
@@ -20,6 +21,7 @@ const StoreContextProvider = (props) => {
             console.error('Error adding to cart:', error);
         }
     };
+    
 
     const updateCartItemQuantity = async (cartId, quantity) => {
         try {
@@ -53,8 +55,12 @@ const StoreContextProvider = (props) => {
         }
     };
 
+    const calculateSubtotal = () => {
+        return cartItems.reduce((acc, item) => acc + item.food.price * item.quantity, 0);
+      };
+
     const contextValue = {
-        cartItems, setCartItems, addToCart, removeFromCart, updateCartItemQuantity, incrementQuantity, decrementQuantity
+        cartItems, setCartItems, addToCart, removeFromCart, updateCartItemQuantity, incrementQuantity, decrementQuantity, calculateSubtotal
     };
 
     return (

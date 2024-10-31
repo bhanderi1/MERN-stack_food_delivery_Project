@@ -1,52 +1,26 @@
 const Order = require('../Model/order.model')
 const Cart = require('../Model/cart.model')
 
-
 exports.addNewOrder = async (req, res) => {
-    try {
-        const { city, district, village, road, homeNumber } = req.body
+  try {
+    const { items, subTotal, ...deliveryAddress } = req.body;
 
-        let carts = await Cart.find({
-            user: req.user._id,
-            isDelete: false
-        }).populate({ path: "food" })
+    const order = await Order.create({
+      user: req.user._id,
+      items: items,
+      subTotal: subTotal,
+      deliveryAddress
+    });
 
-        if (carts.length === 0) {
-            return res.json({ message: "Cart not found..." })
-        }
+    await Cart.updateMany({ user: req.user._id, isDeleted: false }, { isDeleted: true });
 
-        let orderItems = carts.map((item) => ({
-            foodId: item.food._id,
-            quantity: item.quantity,
-            price: item.food.price,
-            totalPrice: item.quantity * item.food.price
-        }))
-        console.log(orderItems);
+    res.status(201).json({ message: "Order placed successfully", order });
+  } catch (error) {
+    console.error("Order placement error:", error);
+    res.status(500).json({ message: "Failed to place order." });
+  }
+};
 
-        let amount = orderItems.reduce((total, item) => total += item.totalPrice, 0)
-        console.log(amount);
-
-        let order = await Order.create({
-            usre: req.user._id,
-            items: orderItems,
-            subTotal: amount,
-            deliveryAddress: {
-                city: city,
-                district: district,
-                village: village,
-                road: road,
-                homeNumber: homeNumber
-            }
-        })
-
-        await Cart.updateMany({ usre: req.user._id, isDelete: false }, { isDelete: true })
-        res.json({ message: "Order Place...", order })
-    }
-    catch (err) {
-        console.error(err);
-        res.status(500).json({ message: "Internal server error" });
-    }
-}
 
 exports.deleteOrder = async(req,res)=>{
     try{

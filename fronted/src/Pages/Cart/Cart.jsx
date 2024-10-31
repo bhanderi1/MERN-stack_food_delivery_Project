@@ -7,7 +7,7 @@ import axios from 'axios';
 
 const Cart = () => {
   const navigate = useNavigate();
-  const { cartItems,setCartItems, updateCartItemQuantity, removeFromCart , } = useContext(StoreContext);
+  const { cartItems,setCartItems, removeFromCart , calculateSubtotal } = useContext(StoreContext);
 
   useEffect(() => {
     const fetchCartItems = async () => {
@@ -20,10 +20,6 @@ const Cart = () => {
     };
     fetchCartItems();
   }, []);
-
-  const calculateSubtotal = () => {
-    return cartItems.reduce((acc, item) => acc + item.food.price * item.quantity, 0);
-  };
 
   return (
     <div className='cart'>
