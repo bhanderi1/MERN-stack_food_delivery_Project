@@ -12,6 +12,10 @@ exports.addNewOrder = async (req, res) => {
       deliveryAddress
     });
 
+    // if (existingOrder) {
+    //   return res.status(409).json({ message: "Order with the same items and address already exists." });
+    // }
+
     await Cart.updateMany({ user: req.user._id, isDeleted: false }, { isDeleted: true });
 
     res.status(201).json({ message: "Order placed successfully", order });

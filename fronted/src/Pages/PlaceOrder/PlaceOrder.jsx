@@ -43,7 +43,7 @@ const PlaceOrder = () => {
       
       // Confirm order and navigate to confirmation page
       console.log('Order response:', response.data);
-      navigate('/order-confirmation');
+      navigate('/confirme-order');
     } catch (err) {
       console.error("Failed to place order:", err);
     }
@@ -55,20 +55,20 @@ const PlaceOrder = () => {
         <div className="place-order-left">
           <p className="title">Delivery Information</p>
           <div className="multi-fields">
-            <input type="text" name="firstName" placeholder="First Name" value={formData.firstName} onChange={handleChange} />
-            <input type="text" name="lastName" placeholder="Last Name" value={formData.lastName} onChange={handleChange} />
+            <input type="text" name="firstName" placeholder="First Name" value={formData.firstName} onChange={handleChange} required/>
+            <input type="text" name="lastName" placeholder="Last Name" value={formData.lastName} onChange={handleChange} required />
           </div>
-          <input type="email" name="email" placeholder="Email Address" value={formData.email} onChange={handleChange} />
-          <input type="text" name="street" placeholder="Street" value={formData.street} onChange={handleChange} />
+          <input type="email" name="email" placeholder="Email Address" value={formData.email} onChange={handleChange} required/>
+          <input type="text" name="street" placeholder="Street" value={formData.street} onChange={handleChange} required />
           <div className="multi-fields">
-            <input type="text" name="city" placeholder="City" value={formData.city} onChange={handleChange} />
-            <input type="text" name="state" placeholder="State" value={formData.state} onChange={handleChange} />
+            <input type="text" name="city" placeholder="City" value={formData.city} onChange={handleChange} required/>
+            <input type="text" name="state" placeholder="State" value={formData.state} onChange={handleChange} required/>
           </div>
           <div className="multi-fields">
-            <input type="text" name="zip" placeholder="Zip Code" value={formData.zip} onChange={handleChange} />
-            <input type="text" name="country" placeholder="Country" value={formData.country} onChange={handleChange} />
+            <input type="text" name="zip" placeholder="Zip Code" value={formData.zip} onChange={handleChange} required/>
+            <input type="text" name="country" placeholder="Country" value={formData.country} onChange={handleChange} required/>
           </div>
-          <input type="text" name="phone" placeholder="Phone" value={formData.phone} onChange={handleChange} />
+          <input type="text" name="phone" placeholder="Phone" value={formData.phone} onChange={handleChange} required/>
         </div>
         <div className="place-order-right">
           <div className="cart-total">
