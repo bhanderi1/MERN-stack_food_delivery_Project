@@ -32,7 +32,7 @@ const ConfirmOrder = () => {
                 // Assuming you have a function to fetch product details
                 // Here you should get the product name based on productId
                 // Replace `getProductNameById` with your actual implementation
-                const productName = `Product with ID ${item.productId}`; // You may want to replace this with actual fetching logic
+                const productName = `Product with ID ${item.productId.name}`; // You may want to replace this with actual fetching logic
                 
                 return (
                   <span key={item.productId}>

@@ -11,16 +11,13 @@ exports.addOrUpdateCart = async (req, res) => {
             return res.status(404).json({ message: "Food item not found" });
         }
 
-        // Find if the item already exists in the user's cart
         let cart = await Cart.findOne({ user: userId, food, isDelete: false });
 
         if (cart) {
-            // Update quantity if item already exists
             cart.quantity += quantity;
             await cart.save();
             return res.json({ message: "Cart quantity updated", cart });
         } else {
-            // Add new item to cart if it does not exist
             cart = await Cart.create({
                 food,
                 user: userId,
