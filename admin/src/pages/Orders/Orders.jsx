@@ -7,6 +7,10 @@ import { assets } from '../../../../fronted/src/assets/assets';
 const Orders = () => {
   const [orders, setOrders] = useState([]);
 
+<<<<<<< HEAD
+=======
+  // Function to fetch all orders
+>>>>>>> 3c841a4e8da9f807cdd15bfbab9a601cfd8ff124
   const fetchOrders = async () => {
     try {
       const response = await axios.get('http://localhost:4000/api/order/get-all-Order');
@@ -36,17 +40,28 @@ const Orders = () => {
                     {itemIndex < order.items.length - 1 ? ', ' : ''}
                   </span>
                 ))}
+<<<<<<< HEAD
               </p><br/>
+=======
+              </p>
+              {/* Safely check if user data exists */}
+>>>>>>> 3c841a4e8da9f807cdd15bfbab9a601cfd8ff124
               <div className="order-user-name">
                 {order.user && order.user.firstName && order.user.lastName
                   ? `${order.user.firstName} ${order.user.lastName}`
                   : "Unknown User"}
               </div>
               <div className="order-address">
+<<<<<<< HEAD
                 <p>{order.deliveryAddress.street},</p>
                 <p>
                   {order.deliveryAddress.city}, 
                   {order.deliveryAddress.state},
+=======
+                <p>{order.deliveryAddress.street}</p>
+                <p>
+                  {order.deliveryAddress.city}, {order.deliveryAddress.state},
+>>>>>>> 3c841a4e8da9f807cdd15bfbab9a601cfd8ff124
                   {order.deliveryAddress.country} - {order.deliveryAddress.zip}
                 </p>
               </div>

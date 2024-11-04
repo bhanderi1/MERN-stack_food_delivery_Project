@@ -18,8 +18,13 @@ const LoginPopup = ({ setShowLogin }) => {
     }
 
     try {
+<<<<<<< HEAD
       const endpoint = currState === 'Sign Up'
         ? 'http://localhost:4000/api/user/signUp'
+=======
+      const endpoint = currState === 'Sign Up' 
+        ? 'http://localhost:4000/api/user/signUp' 
+>>>>>>> 3c841a4e8da9f807cdd15bfbab9a601cfd8ff124
         : 'http://localhost:4000/api/user/signIn';
 
       const response = await axios.post(endpoint, bodyData, { withCredentials: true });
@@ -33,7 +38,12 @@ const LoginPopup = ({ setShowLogin }) => {
     } catch (error) {
       console.error('An error occurred:', error);
     }
+<<<<<<< HEAD
   };
+=======
+};
+
+>>>>>>> 3c841a4e8da9f807cdd15bfbab9a601cfd8ff124
 
   return (
     <div className='login-popup'>
@@ -44,6 +54,7 @@ const LoginPopup = ({ setShowLogin }) => {
         </div>
         <div className="login-popup-inputs">
           {currState === 'Sign Up' && (
+<<<<<<< HEAD
             <input
               type="text"
               placeholder='Your Name'
@@ -62,6 +73,26 @@ const LoginPopup = ({ setShowLogin }) => {
             placeholder='Your Password'
             required
             onChange={(e) => setPassword(e.target.value)}
+=======
+            <input 
+              type="text" 
+              placeholder='Your Name' 
+              required 
+              onChange={(e) => setName(e.target.value)} 
+            />
+          )}
+          <input 
+            type="email" 
+            placeholder='Your Email' 
+            required 
+            onChange={(e) => setEmail(e.target.value)} 
+          />
+          <input 
+            type="password" 
+            placeholder='Your Password' 
+            required 
+            onChange={(e) => setPassword(e.target.value)} 
+>>>>>>> 3c841a4e8da9f807cdd15bfbab9a601cfd8ff124
           />
         </div>
         <button>{currState === 'Sign Up' ? 'Create account' : 'Login'}</button>

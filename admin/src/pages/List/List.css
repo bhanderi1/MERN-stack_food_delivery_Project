@@ -2,10 +2,13 @@
     width: 100%;
     margin: 10px;
 }
+<<<<<<< HEAD
 h3{
     margin-bottom: 20px;
     padding-top: 10px;
 }
+=======
+>>>>>>> 3c841a4e8da9f807cdd15bfbab9a601cfd8ff124
 .list-table-format{
     display: grid;
     grid-template-columns: 0.5fr 2fr 1fr 1fr 0.5fr;

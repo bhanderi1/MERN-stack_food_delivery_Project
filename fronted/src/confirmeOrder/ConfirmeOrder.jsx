@@ -6,6 +6,10 @@ import { assets } from '../assets/assets';
 const ConfirmOrder = () => {
   const [data, setData] = useState([]);
 
+<<<<<<< HEAD
+=======
+  // Function to fetch orders
+>>>>>>> 3c841a4e8da9f807cdd15bfbab9a601cfd8ff124
   const fetchOrders = async () => {
     try {
       const response = await axios.get('http://localhost:4000/api/order/get-all-Order');

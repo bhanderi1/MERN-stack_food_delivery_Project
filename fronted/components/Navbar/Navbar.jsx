@@ -6,9 +6,15 @@ import { StoreContext } from '../../src/context/StoreContext';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
+<<<<<<< HEAD
 const Navbar = ({ setShowLogin}) => {
     const [menu, setMenu] = useState("home");
     const {calculateSubtotal } = useContext(StoreContext);
+=======
+const Navbar = ({ setShowLogin }) => {
+    const [menu, setMenu] = useState("home");
+    const { getTotalCartAmount } = useContext(StoreContext);
+>>>>>>> 3c841a4e8da9f807cdd15bfbab9a601cfd8ff124
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [userProfile, setUserProfile] = useState(null);
     const navigate = useNavigate();
@@ -17,8 +23,14 @@ const Navbar = ({ setShowLogin}) => {
         const checkAuth = async () => {
             try {
                 const response = await axios.get('http://localhost:4000/api/user/user-profile', {
+<<<<<<< HEAD
                     withCredentials: true  
                 });
+=======
+                    withCredentials: true  // Include credentials to access the cookie
+                });
+                // console.log(response);
+>>>>>>> 3c841a4e8da9f807cdd15bfbab9a601cfd8ff124
                 setUserProfile(response.data);
                 setIsAuthenticated(true);
             } catch (error) {
@@ -56,7 +68,11 @@ const Navbar = ({ setShowLogin}) => {
                 <img src={assets.search_icon} alt='' />
                 <div className='navbar-search-icon'>
                     <Link to='/cart'><img src={assets.basket_icon} alt='' /></Link>
+<<<<<<< HEAD
                     <div className={calculateSubtotal() === 0 ? "" : "dot"}> </div>
+=======
+                    {/* <div className={getTotalCartAmount() === 0 ? "" : "dot"}> </div> */}
+>>>>>>> 3c841a4e8da9f807cdd15bfbab9a601cfd8ff124
                 </div>
                 {!isAuthenticated ? (
                     <button onClick={() => setShowLogin(true)}>

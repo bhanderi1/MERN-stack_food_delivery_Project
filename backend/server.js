@@ -9,7 +9,11 @@ const path= require('path')
 const cookie = require('cookie-parser')
 
 app.use(cors({
+<<<<<<< HEAD
     origin:[process.env.ADMIN_URL, process.env.FOOD_DEL_URL],
+=======
+    origin:["http://localhost:5173", "http://localhost:5174"],
+>>>>>>> 3c841a4e8da9f807cdd15bfbab9a601cfd8ff124
     credentials:true
 }))
 app.use(morgan('dev'))

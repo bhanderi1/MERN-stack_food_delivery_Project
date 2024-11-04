@@ -76,7 +76,12 @@ exports.deleteFood = async (req, res) => {
       if (!food) {
         return res.status(404).json({ message: "Food not found" });
       }
+<<<<<<< HEAD
       
+=======
+  
+      // Mark the food item as deleted
+>>>>>>> 3c841a4e8da9f807cdd15bfbab9a601cfd8ff124
       await Food.findByIdAndUpdate(foodId, { isDeleted: true }, { new: true });
       res.status(200).json({ success: true, message: "Food item deleted successfully" });
     } catch (err) {
