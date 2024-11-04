@@ -7,7 +7,7 @@ exports.verifyToken = async (req, res, next) => {
         console.log("Authorization token:", authorization);
 
         if (!authorization) {
-            req.flash({ message: 'No authorization token provided' });
+            // req.flash({ message: 'No authorization token provided' });
             return res.status(401).json({ message: 'No authorization token provided' });
         }
 

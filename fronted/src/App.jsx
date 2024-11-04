@@ -19,11 +19,7 @@ const App = () => {
           <Route path='/' element={<Home />} />
           <Route path='/cart' element={<Cart/>} />
           <Route path='/order' element={<PlaceOrder />} />
-<<<<<<< HEAD
           <Route path='/confirme-order' element={<ConfirmOrder />} />
-=======
-          <Route path='order' element={<ConfirmOrder />} />
->>>>>>> 3c841a4e8da9f807cdd15bfbab9a601cfd8ff124
         </Routes>
       </div>
       <Footer />

@@ -27,11 +27,7 @@ const FoodDisplay = ({ category }) => {
     try {
       const existingItem = getCartItem(foodId);
       if (existingItem) {
-<<<<<<< HEAD
         incrementQuantity(existingItem._id, existingItem.quantity); 
-=======
-        incrementQuantity(existingItem._id, existingItem.quantity); // Increase quantity if already in cart
->>>>>>> 3c841a4e8da9f807cdd15bfbab9a601cfd8ff124
       } else {
         await addToCart(foodId, 1);
         alert('Item added to cart!');

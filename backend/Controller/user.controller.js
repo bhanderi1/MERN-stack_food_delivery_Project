@@ -77,11 +77,7 @@ exports.deleteUser = async(req,res)=>{
     try{
       let user = req.user
       if(!user){
-<<<<<<< HEAD
          return res.status(404).json({message:"User not found..."})
-=======
-         return res.status(404).json({message:"Usre not found..."})
->>>>>>> 3c841a4e8da9f807cdd15bfbab9a601cfd8ff124
       }
       user = await User.findByIdAndUpdate(usre._id , {isDelete:true}, {new:true})
       res.status(200).json({message:"User Delete Successfully..."})
