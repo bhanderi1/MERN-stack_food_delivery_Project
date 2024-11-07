@@ -1,6 +1,6 @@
 const Order = require('../Model/order.model')
 const Cart = require('../Model/cart.model')
-
+import stripe from "stripe"
 
 exports.addNewOrder = async (req, res) => {
   try {
