@@ -53,6 +53,9 @@ exports.signIn = async(req,res)=>{
 exports.userProfile = async(req,res)=>{
     try{
         let user = await User.findOne({_id:req.user._id})
+        if(!user){
+            res.json(404).json({message:"user not found..."})
+        }
         res.status(200).json({message:"Show User Profile", user})
     }
     catch (err) {
@@ -65,6 +68,9 @@ exports.updateUser = async(req,res)=>{
     try{
        let user= req.user
        user = await User.findByIdAndUpdate(user._id ,{$set:{...req.body}} , {new:true})
+       if(!user){
+        res.status(404).json({message:'User not found...'})
+       }
        res.status(200).json({user , message: "Password update successfully..."})
     }
     catch (err) {

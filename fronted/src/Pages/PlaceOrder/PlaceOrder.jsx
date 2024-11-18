@@ -22,7 +22,6 @@ const PlaceOrder = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Prepare order data with user input and cart details
       const orderData = {
         ...formData,
         items: cartItems.map(item => ({
@@ -32,16 +31,15 @@ const PlaceOrder = () => {
           totalPrice: item.quantity * item.food.price
         })),
         subTotal: calculateSubtotal(),
-        totalAmount: calculateSubtotal() + 2, // including delivery fee
+        totalAmount: calculateSubtotal() + 2,
         deliveryFee: calculateSubtotal() === 0 ? 0 : 2
       };
 
-      // Send order data to server
+
       const response = await axios.post('http://localhost:4000/api/order/add-order', orderData, {
         headers: { 'Content-Type': 'application/json' }
       });
-      
-      // Confirm order and navigate to confirmation page
+
       console.log('Order response:', response.data);
       navigate('/confirme-order');
     } catch (err) {

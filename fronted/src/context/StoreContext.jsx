@@ -11,16 +11,15 @@ const StoreContextProvider = (props) => {
             const response = await axios.post('http://localhost:4000/api/cart/add-cart', { food: foodId, quantity });
             const updatedCartItem = response.data.cart;
 
-            // Check if item is already in the cart
+            // already cart exist
             setCartItems(prevItems => {
                 const itemIndex = prevItems.findIndex(item => item.food._id === foodId);
                 if (itemIndex > -1) {
-                    // Update quantity if item exists
+                    // Update quantity item exists
                     const updatedItems = [...prevItems];
                     updatedItems[itemIndex].quantity = updatedCartItem.quantity;
                     return updatedItems;
                 } else {
-                    // Add new item if it does not exist
                     return [...prevItems, updatedCartItem];
                 }
             });
