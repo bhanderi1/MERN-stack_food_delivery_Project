@@ -44,14 +44,15 @@
 .navbar li{
     cursor: pointer;
 }
-.navbar-search-icon .dot{
+.navbar-search-icon .dot {
     position: absolute;
-    min-width: 10px;
-    min-height: 10px;
+    min-width: 15px;
+    min-height: 15px;
     background-color: tomato;
-    border-radius: 5px;
-    top: -8px;
-    right: -8px;
+    border: 2px solid white;
+    border-radius: 50%;
+    top: 8px;
+    right: 14.50%;
 }
 .navbar-profile{
     position: relative;

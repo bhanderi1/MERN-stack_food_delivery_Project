@@ -22,6 +22,9 @@
     margin-top: 20px;
     margin-bottom: 5px;
 }
+.order-user-name b{
+    text-transform: uppercase;
+}
 
 .order-item-address{
     margin-top: 10px;

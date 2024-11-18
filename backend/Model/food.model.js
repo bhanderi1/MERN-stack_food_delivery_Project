@@ -4,7 +4,8 @@ const foodSchema = new mongoose.Schema({
     name: { 
         type: String, 
         required: true, 
-        unique: true
+        unique: true,
+        match:/^[a-zA-Z0-9\s]+$/
     },
     description: { 
         type: String, 
@@ -19,7 +20,8 @@ const foodSchema = new mongoose.Schema({
     },
     category: { 
         type: String, 
-        required: true  
+        required: true  ,
+        eval:['Salad', "Rolls", "Pasta","Desserts","Sandwich","Cake","Pure Veg","Noodles"]
     },
     isDeleted: { 
         type: Boolean, 

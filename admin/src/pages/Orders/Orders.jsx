@@ -41,9 +41,11 @@ const Orders = () => {
               </p>
               <br />
               <div className="order-user-name">
-                {order.user && order.user.firstName && order.user.lastName
-                  ? `${order.user.firstName} ${order.user.lastName}`
+              <b>
+                {order.deliveryAddress && order.deliveryAddress.firstName && order.deliveryAddress.lastName
+                  ? `${order.deliveryAddress.firstName} ${order.deliveryAddress.lastName}`
                   : 'Unknown User'}
+              </b>   
               </div>
               <div className="order-address">
                 <p>{order.deliveryAddress.street}</p>
