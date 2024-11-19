@@ -1,9 +1,10 @@
-import { createContext, useState } from "react";
+import React, { createContext, useState } from "react";
 import axios from "axios";
 
+// Named export
 export const StoreContext = createContext(null);
 
-const StoreContextProvider = (props) => {
+const StoreContextProvider = ({ children }) => {
     const [cartItems, setCartItems] = useState([]);
 
     const addToCart = async (foodId, quantity = 1) => {
@@ -11,11 +12,9 @@ const StoreContextProvider = (props) => {
             const response = await axios.post('http://localhost:4000/api/cart/add-cart', { food: foodId, quantity });
             const updatedCartItem = response.data.cart;
 
-            // already cart exist
             setCartItems(prevItems => {
                 const itemIndex = prevItems.findIndex(item => item.food._id === foodId);
                 if (itemIndex > -1) {
-                    // Update quantity item exists
                     const updatedItems = [...prevItems];
                     updatedItems[itemIndex].quantity = updatedCartItem.quantity;
                     return updatedItems;
@@ -79,9 +78,10 @@ const StoreContextProvider = (props) => {
 
     return (
         <StoreContext.Provider value={contextValue}>
-            {props.children}
+            {children}
         </StoreContext.Provider>
     );
 };
 
+// Default export
 export default StoreContextProvider;

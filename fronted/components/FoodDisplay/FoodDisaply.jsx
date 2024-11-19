@@ -3,13 +3,22 @@ import './FoodDisplay.css';
 import { StoreContext } from '../../src/context/StoreContext';
 import { assets } from '../../src/assets/assets';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 axios.defaults.withCredentials = true;
 
 const FoodDisplay = ({ category }) => {
-  const { cartItems, addToCart, incrementQuantity, decrementQuantity } = useContext(StoreContext);
+  const {
+    cartItems,
+    setCartItems, // Add this function in your context to update cart
+    addToCart,
+    incrementQuantity,
+    decrementQuantity,
+  } = useContext(StoreContext);
   const [list, setList] = useState([]);
 
+  // Fetch food items
   useEffect(() => {
     const fetchFoodData = async () => {
       try {
@@ -19,18 +28,35 @@ const FoodDisplay = ({ category }) => {
         console.error('Error fetching food data:', err);
       }
     };
-    
+
     fetchFoodData();
   }, []);
+
+  // Fetch cart items on mount
+  useEffect(() => {
+    const fetchCartData = async () => {
+      try {
+        const response = await axios.get('http://localhost:4000/api/cart'); // Adjust API endpoint
+        setCartItems(response.data.cart); // Update context with cart data
+      } catch (err) {
+        console.error('Error fetching cart data:', err);
+      }
+    };
+
+    fetchCartData();
+  }, [setCartItems]);
 
   const addToCartHandler = async (foodId) => {
     try {
       const existingItem = getCartItem(foodId);
       if (existingItem) {
-        incrementQuantity(existingItem._id, existingItem.quantity); 
+        incrementQuantity(existingItem._id, existingItem.quantity);
       } else {
         await addToCart(foodId, 1);
-        alert('Item added to cart!');
+        toast.success('Successfully Added food Item To Cart', {
+          position: 'bottom-right',
+          autoClose: 3000,
+        });
       }
     } catch (error) {
       console.error('Error adding to cart:', error);
@@ -90,6 +116,7 @@ const FoodDisplay = ({ category }) => {
             );
           })}
       </div>
+      <ToastContainer />
     </div>
   );
 };
