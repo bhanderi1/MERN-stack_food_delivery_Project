@@ -11,7 +11,7 @@ axios.defaults.withCredentials = true;
 const FoodDisplay = ({ category }) => {
   const {
     cartItems,
-    setCartItems, // Add this function in your context to update cart
+    setCartItems, 
     addToCart,
     incrementQuantity,
     decrementQuantity,
@@ -36,8 +36,8 @@ const FoodDisplay = ({ category }) => {
   useEffect(() => {
     const fetchCartData = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/api/cart'); // Adjust API endpoint
-        setCartItems(response.data.cart); // Update context with cart data
+        const response = await axios.get('http://localhost:4000/api/cart');
+        setCartItems(response.data.cart); 
       } catch (err) {
         console.error('Error fetching cart data:', err);
       }
@@ -107,7 +107,7 @@ const FoodDisplay = ({ category }) => {
                 <div className="food-item-info">
                   <div className="food-item-name-rating">
                     <p>{item.name}</p>
-                    <img src={assets.rating_starts} alt="Rating" />
+                    <img src={assets.rating_starts} alt="Rating start icon" />
                   </div>
                   <p className="food-item-desc">{item.description}</p>
                   <p className="food-item-price">${item.price}</p>

@@ -57,7 +57,7 @@ const Navbar = ({ setShowLogin}) => {
             <div className='navbar-right'>
                 <img src={assets.search_icon} alt='' />
                 <div className='navbar-search-icon'>
-                    <Link to='/cart'><img src={assets.basket_icon} alt='' /></Link>
+                    <Link to='/cart'><img src={assets.basket_icon} alt='basket icon iamge' /></Link>
                     <div className={calculateSubtotal() === 0 ? "" : "dot"}></div>
                     {/* <div className={getTotalCartAmount() === 0 ? "" : "dot"}> </div> */}
                 </div>
@@ -67,11 +67,11 @@ const Navbar = ({ setShowLogin}) => {
                     </button>
                 ) : (
                     <div className='navbar-profile'>
-                        <img src={userProfile?.profileImage || assets.profile_icon} alt="Profile" />
+                        <img src={userProfile?.profileImage || assets.profile_icon} alt="Profile icon" />
                         <ul className="nav-profile-dropdown">
-                            <li onClick={() => navigate('/confirme-order')}><img src={assets.bag_icon} alt=""/>Orders</li>
+                            <li onClick={() => navigate('/confirme-order')}><img src={assets.bag_icon} alt="bag_icon image"/>Orders</li>
                             <hr />
-                            <li onClick={handleLogout}><img src={assets.logout_icon} alt="" />Logout</li>
+                            <li onClick={handleLogout}><img src={assets.logout_icon} alt="logout icon image" />Logout</li>
                         </ul>
                         <div className='profile-name'>
                             {userProfile && <span>{userProfile.name}</span>}
