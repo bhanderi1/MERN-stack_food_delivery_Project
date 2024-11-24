@@ -17,8 +17,8 @@ const FoodDisplay = ({ category }) => {
     decrementQuantity,
   } = useContext(StoreContext);
   const [list, setList] = useState([]);
+  const [isAuthenticated , setIsAuthenticated] = useState(false)
 
-  // Fetch food items
   useEffect(() => {
     const fetchFoodData = async () => {
       try {
@@ -32,7 +32,6 @@ const FoodDisplay = ({ category }) => {
     fetchFoodData();
   }, []);
 
-  // Fetch cart items on mount
   useEffect(() => {
     const fetchCartData = async () => {
       try {

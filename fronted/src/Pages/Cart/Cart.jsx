@@ -23,7 +23,9 @@ const Cart = () => {
   }, []);
 
   return (
+    <>
     <div className="cart">
+    <h1>Carts</h1>
       <div className="cart-item">
         <div className="cart-items-title">
           <p>Items</p>
@@ -73,6 +75,7 @@ const Cart = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
